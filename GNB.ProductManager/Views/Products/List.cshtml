@@ -1,0 +1,91 @@
+﻿@model GNB.ProductManager.Helpers.PaginatedList<GNB.ProductManager.Models.Transaction>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>List</h1>
+
+<h4>Transaction</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-inline" name="filterForm" asp-controller="Products" asp-action="List" method="get">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="sku" class="sr-only">SKU</label>
+                <input type="text" class="form-control" pattern="^[A-Za-z]{1,}[A-Za-z0-9]*$" id="sku" placeholder="SKU" maxlength="10" name="sku" value='@ViewData["sku"]'>
+            </div>
+            <input type="submit" class="btn btn-primary mb-2" />
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        SKU
+                    </th>
+                    <th>
+                        Currency
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sku)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Currency)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                </tr>
+                }
+                <tr>
+                    <td colspan="2" class="text-right">
+                        <strong>Total</strong>
+                    </td>
+                    <td>
+                        <strong>
+                            @ViewData["TotalAmount"]
+                        </strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 text-center">
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+
+        <a asp-controller="Products" asp-action="List"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["sku"]"
+           class="btn btn-default @prevDisabled">
+            Previous
+        </a>
+        <a asp-controller="Products" asp-action="List"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["sku"]"
+           class="btn btn-default @nextDisabled">
+            Next
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
