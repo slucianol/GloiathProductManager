@@ -1,6 +1,8 @@
-﻿using GNB.Domain.ValueObject;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace GNB.ProductManager.Models {
+namespace GNB.Domain.DTOs {
     public class Transaction {
         public string Sku { get; set; }
         public string Amount { get; set; }

@@ -10,7 +10,7 @@ namespace GNB.Infrastructure.Services {
             LogFilePath = logFilePath;
         }
         public void Log(Log log) {
-            File.AppendAllText(LogFilePath, JsonConvert.SerializeObject(log));  
+            //File.AppendAllText(LogFilePath, JsonConvert.SerializeObject(log));  
         }
     }
 }

@@ -29,7 +29,7 @@ namespace GNB.Infrastructure.Services {
                         }
                     }).ToList();
                     if (rates.Count > 0) {
-                        rateCacheService.PersistRatesInCache(rates.ToList());
+                        rateCacheService.PersistRatesInCache(rates);
                         if (currency != "" && currency != string.Empty) {
                             return rates.Where(r => r.From == currency).AsQueryable();
                         }

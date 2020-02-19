@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using GNB.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using GNB.ProductManager.Helpers;
+using System;
 
 namespace GNB.ProductManager.Controllers {
     public class ProductsController : Controller {
@@ -24,13 +25,13 @@ namespace GNB.ProductManager.Controllers {
                                                         .GetTransactions()
                                                         .Select(t => new Models.Transaction {
                                                             Sku = t.Sku,
-                                                            Amount = t.Amount,
+                                                            Amount = t.Amount.ToString(),
                                                             Currency = t.Currency
                                                         });
             if (!string.IsNullOrEmpty(sku)) {
                 transactions = transactions.Where(t => t.Sku == ViewData["sku"].ToString());
             }
-            ViewData["TotalAmount"] = transactions.Sum(t => t.Amount);
+            ViewData["TotalAmount"] = 0M;//transactions.Sum(t => decimal.Parse(t.ToString()));
             int pageSize = configuration.GetValue<int>("PageSize");
             return View(PaginatedList<Models.Transaction>.CreateAsync(transactions, pageNumber ?? 1, pageSize));
         }

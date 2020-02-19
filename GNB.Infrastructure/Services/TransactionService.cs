@@ -3,6 +3,7 @@ using GNB.Domain.Entities;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Linq;
+using GNB.Domain;
 
 namespace GNB.Infrastructure.Services {
     public class TransactionService : JsonService, ITransactionService {
@@ -14,14 +15,13 @@ namespace GNB.Infrastructure.Services {
         public IQueryable<Transaction> GetTransactions(string sku = "") {
             string jsonString = GetHttpJsonContent();
             if (jsonString != string.Empty) {
-                transactions = JsonConvert.DeserializeObject<List<Transaction>>(jsonString).Select(t => new Transaction {
+                transactions = JsonConvert.DeserializeObject<List<GNB.Domain.DTOs.Transaction>>(jsonString).Select(t => new GNB.Domain.Entities.Transaction {
                     Sku = t.Sku,
-                    Amount = t.Amount,
                     Currency = t.Currency,
-                    AmountNoFloatingPoint = new Domain.ValueObject.Decimal {
-                        Value = int.Parse(t.Amount.ToString().Replace(".", "")),
+                    Amount = new Domain.ValueObject.Decimal {
+                        Value = int.Parse(t.Amount.Replace(".", "")),
                         Sign = true,
-                        Exponent = t.Amount.ToString().Substring(t.Amount.ToString().LastIndexOf(".") + 1).Length
+                        Exponent = t.Amount.Substring(t.Amount.LastIndexOf(".") + 1).Length
                     }
                 }).ToList();
                 if (sku != "" && sku != string.Empty) {

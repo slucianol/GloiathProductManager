@@ -19,14 +19,22 @@ namespace GNB.ProductManager.Controllers {
         [ProducesResponseType(typeof(List<Transaction>), 200)]
         [ProducesResponseType(typeof(UnauthorizedResult), 401)]
         public IActionResult Get() {
-            return Ok(transactionService.GetTransactions().ToList());
+            return Ok(transactionService.GetTransactions().Select(t => new Models.Transaction {
+                Currency = t.Currency,
+                Sku = t.Sku,
+                Amount = t.Amount.ToString()
+            }).ToList());
         }
         [HttpGet("{sku}")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(List<Transaction>), 200)]
         [ProducesResponseType(typeof(UnauthorizedResult), 401)]
         public IActionResult Get(string sku) {
-            return Ok(transactionService.GetTransactions(sku).ToList());
+            return Ok(transactionService.GetTransactions(sku).Select(t => new Models.Transaction {
+                Currency = t.Currency,
+                Sku = t.Sku,
+                Amount = t.Amount.ToString()
+            }).ToList());
         }
     }
 }
