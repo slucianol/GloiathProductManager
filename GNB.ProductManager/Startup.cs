@@ -48,9 +48,10 @@ namespace GNB.ProductManager {
                     Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey
                 });
             });
-            services.AddSingleton<IRateCacheService>(new RateCacheService(Configuration.GetValue<string>("CacheStoreFilePath")));
+            services.AddSingleton<IRateCacheServiceUri>(new RateCacheServiceUri(Configuration.GetValue<string>("CacheStoreFilePath")));
             services.AddSingleton<IRateServiceUri>(new RateServiceUri(Configuration.GetValue<string>("ServicesUri:RatesServiceUri")));
             services.AddSingleton<ITransactionServiceUri>(new TransactionServiceUri(Configuration.GetValue<string>("ServicesUri:TransactionServiceUri")));
+            services.AddTransient<IRateCacheService, RateCacheService>();
             services.AddSingleton<ILoggerService>(new LoggerService("Logs.json"));
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IRatesService, RatesService>();

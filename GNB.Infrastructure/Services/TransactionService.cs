@@ -14,7 +14,16 @@ namespace GNB.Infrastructure.Services {
         public IQueryable<Transaction> GetTransactions(string sku = "") {
             string jsonString = GetHttpJsonContent();
             if (jsonString != string.Empty) {
-                transactions = JsonConvert.DeserializeObject<List<Transaction>>(jsonString);
+                transactions = JsonConvert.DeserializeObject<List<Transaction>>(jsonString).Select(t => new Transaction {
+                    Sku = t.Sku,
+                    Amount = t.Amount,
+                    Currency = t.Currency,
+                    AmountNoFloatingPoint = new Domain.ValueObject.Decimal {
+                        Value = int.Parse(t.Amount.ToString().Replace(".", "")),
+                        Sign = true,
+                        Exponent = t.Amount.ToString().Substring(t.Amount.ToString().LastIndexOf(".") + 1).Length
+                    }
+                }).ToList();
                 if (sku != "" && sku != string.Empty) {
                     return transactions.Where(t => t.Sku == sku).Select(t => new Transaction {
                         Currency = "EUR",

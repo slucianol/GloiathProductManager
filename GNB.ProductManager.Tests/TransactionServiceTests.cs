@@ -10,7 +10,7 @@ namespace GNB.ProductManager.Tests {
     public class TransactionServiceTests {
         private readonly ITransactionService transactionService;
         public TransactionServiceTests() {
-            transactionService = new TransactionService(new TransactionServiceUri("https://localhost:44318/transactions.json"), new RateConverterService(new RatesService(new RateServiceUri("https://localhost:44318/rates.json"), new RateCacheService("RatesCache.json"))));
+            transactionService = new TransactionService(new TransactionServiceUri("https://localhost:44318/transactions.json"), new RateConverterService(new RatesService(new RateServiceUri("https://localhost:44318/rates.json"), new RateCacheService(new RateCacheServiceUri("PruebaRateCache.json"), new LoggerService("PruebaLogs.json")), new LoggerService("PruebaLogs.json"))));
         }
         [TestMethod]
         public void Get_All_Transactions() {

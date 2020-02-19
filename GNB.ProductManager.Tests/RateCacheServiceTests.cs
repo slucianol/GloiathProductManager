@@ -10,7 +10,7 @@ namespace GNB.ProductManager.Tests {
     public class RateCacheServiceTests {
         private readonly IRateCacheService rateCacheService;
         public RateCacheServiceTests() {
-            rateCacheService = new RateCacheService("PruebaRateCache.json");
+            rateCacheService = new RateCacheService(new RateCacheServiceUri("PruebaRateCache.json"), new LoggerService("PruebaLogs.json"));
         }
         [TestMethod]
         public void Persist_Rate_Cache() {

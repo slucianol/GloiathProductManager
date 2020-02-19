@@ -7,7 +7,7 @@ namespace GNB.ProductManager.Tests {
     public class RateConverterServiceTests {
         private readonly IRateConverterService rateConverterService;
         public RateConverterServiceTests() {
-            rateConverterService = new RateConverterService(new RatesService(new RateServiceUri("https://localhost:44318/rates.json"), new RateCacheService("RatesCache.json")));
+            rateConverterService = new RateConverterService(new RatesService(new RateServiceUri("https://localhost:44318/rates.json"), new RateCacheService(new RateCacheServiceUri("PruebaRateCache.json"), new LoggerService("PruebaLogs.json")), new LoggerService("PruebaLogs.json")));
         }
         [TestMethod]
         public void Convert_CAD_To_EUR() {

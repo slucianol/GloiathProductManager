@@ -19,7 +19,15 @@ namespace GNB.Infrastructure.Services {
             try {
                 string jsonString = GetHttpJsonContent();
                 if (jsonString != string.Empty) {
-                    rates = JsonConvert.DeserializeObject<List<RateConverter>>(jsonString);
+                    rates = JsonConvert.DeserializeObject<List<RateConverter>>(jsonString).Select(r => new RateConverter {
+                        From = r.From,
+                        To = r.To,
+                        Rate = r.Rate,
+                        RateNoFloatingPoint = new GNB.Domain.ValueObject.Decimal {
+                            Value = int.Parse(r.Rate.ToString().Replace(".", "")),
+                            Exponent = r.Rate.ToString().Substring(r.Rate.ToString().LastIndexOf(".") + 1).Length
+                        }
+                    }).ToList();
                     if (rates.Count > 0) {
                         rateCacheService.PersistRatesInCache(rates.ToList());
                         if (currency != "" && currency != string.Empty) {
